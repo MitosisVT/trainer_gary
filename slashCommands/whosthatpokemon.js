@@ -19,7 +19,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Who's That Pokémon?")
-      .setDescription("Type your guess in chat!")
+      .setDescription("Type your guess in chat! You have 5 seconds to respond!")
       .setColor("#000000")
       .setImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${data.id}.png`)
 
@@ -28,7 +28,7 @@ module.exports = {
     const filter = m => !m.author.bot;
     const collector = interaction.channel.createMessageCollector({
       filter,
-      time: 15000
+      time: 5000
     });
 
     collector.on("collect", msg => {
