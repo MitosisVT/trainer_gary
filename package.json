@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "discord.js": "^14.26.2",
+    "nodemon": "^3.1.14",
+    "pokedex-promise-v2": "^4.2.1",
+    "pokemon": "^3.3.0",
+    "pokemon-images": "^2.0.1"
+  }
+}
