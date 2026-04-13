@@ -17,11 +17,14 @@ module.exports = {
 
     const image = data.sprites.other["official-artwork"].front_default;
 
+    // 👇 silhouette version (blackened)
+    const silhouette = `https://images.weserv.nl/?url=${encodeURIComponent(image)}&w=475&h=475&fit=contain&mask=black`;
+
     const embed = new EmbedBuilder()
       .setTitle("Who's That Pokémon?")
       .setDescription("Type your guess in chat! You have 5 seconds to respond!")
       .setColor("#000000")
-      .setImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${data.id}.png`)
+      .setImage(silhouette);
 
     await interaction.editReply({ embeds: [embed] });
 
@@ -34,12 +37,28 @@ module.exports = {
     collector.on("collect", msg => {
       if (msg.content.toLowerCase() === name) {
         msg.reply(`🎉 Correct! It was **${name}**`);
-        collector.stop();
+
+        // 👇 reveal the actual Pokémon
+        const revealEmbed = new EmbedBuilder()
+          .setTitle(`It's ${name}!`)
+          .setColor("#00ff00")
+          .setImage(image);
+
+        interaction.followUp({ embeds: [revealEmbed] });
+
+        collector.stop("guessed");
       }
     });
 
-    collector.on("end", () => {
-      interaction.followUp(`⏰ Time's up! It was **${name}**`);
+    collector.on("end", (collected, reason) => {
+      if (reason !== "guessed") {
+        const revealEmbed = new EmbedBuilder()
+          .setTitle(`⏰ Time's up! It was ${name}`)
+          .setColor("#ff0000")
+          .setImage(image);
+
+        interaction.followUp({ embeds: [revealEmbed] });
+      }
     });
   }
 };
