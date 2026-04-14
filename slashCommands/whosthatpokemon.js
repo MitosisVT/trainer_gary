@@ -22,7 +22,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Who's That Pokémon?")
-      .setDescription("Type your guess in chat! You have 5 seconds to respond!")
+      .setDescription("Type your guess in chat! You have 10 seconds to respond!")
       .setColor("#000000")
       .setImage(silhouette);
 
@@ -31,7 +31,7 @@ module.exports = {
     const filter = m => !m.author.bot;
     const collector = interaction.channel.createMessageCollector({
       filter,
-      time: 5000
+      time: 10000
     });
 
     collector.on("collect", msg => {
@@ -53,7 +53,7 @@ module.exports = {
     collector.on("end", (collected, reason) => {
       if (reason !== "guessed") {
         const revealEmbed = new EmbedBuilder()
-          .setTitle(`⏰ Time's up! It was ${name}`)
+          .setTitle(`⏰ Time's up! It was ${name.toUpperCase()}`)
           .setColor("#ff0000")
           .setImage(image);
 
